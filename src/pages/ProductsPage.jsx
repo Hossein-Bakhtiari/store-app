@@ -6,31 +6,35 @@ import styles from "./ProductsPage.module.css";
 import Loader from "../components/Loader";
 import { ImSearch } from "react-icons/im";
 import { FaListUl } from "react-icons/fa";
+import { filterProducts, searchProducts } from "../helpers/helper";
 
 function ProductsPage() {
   const products = useProducts();
   const [search, setSearch] = useState("");
-  const[query , setQuery] = useState({});
+  const [query, setQuery] = useState({});
   const [displayed, setDisplayed] = useState([]);
 
-  
   useEffect(() => {
-    setDisplayed(products)
+    setDisplayed(products);
   }, [products]);
 
   useEffect(() => {
+    let finalProducts = searchProducts(products, query.search);
+    finalProducts = filterProducts(finalProducts, query.category);
     console.log(query)
-  } , [query])
+    setDisplayed(finalProducts);
+
+  }, [query]);
 
   const searchHndler = () => {
-    setQuery((query) => ({...query , search}))
+    setQuery((query) => ({ ...query, search }));
   };
 
   const categoryHandler = (event) => {
     const { tagName } = event.target;
     const category = event.target.innerText.toLowerCase();
     if (tagName !== "LI") return;
-    setQuery((query) => ({...query , category}))
+    setQuery((query) => ({ ...query, category }));
   };
 
   return (
@@ -60,10 +64,10 @@ function ProductsPage() {
           </div>
           <ul onClick={categoryHandler}>
             <li>All</li>
-            <li>Elctronics</li>
+            <li>Electronics</li>
             <li>Jewelery</li>
             <li>Men's Clothing</li>
-            <li>Woman's Clothing</li>
+            <li>Women's Clothing</li>
           </ul>
         </div>
       </div>
