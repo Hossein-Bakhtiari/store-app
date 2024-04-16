@@ -28,4 +28,19 @@ const createQueryObject = (currentQuery, newQuery) => {
   return { ...currentQuery, ...newQuery };
 };
 
-export { shortenText, searchProducts, filterProducts , createQueryObject};
+const getInitialQuery = (searchParems) => {
+  const query = {};
+  const cateqory = searchParems.get("category");
+  const search = searchParems.get("search");
+  if (cateqory) query.category = cateqory;
+  if (search) query.search = search;
+  return query;
+};
+
+export {
+  shortenText,
+  searchProducts,
+  filterProducts,
+  createQueryObject,
+  getInitialQuery,
+};
