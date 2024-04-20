@@ -1,6 +1,9 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import BasketCard from "../components/BasketCard";
+import BasketSidebar from "../components/BasketSidebar";
+import styles from "./CheckingoutPage.module.css"
+
 
 function CheckingoutPage() {
   const [state, dispatch] = useCart();
@@ -9,15 +12,26 @@ function CheckingoutPage() {
     dispatch({ type, payload });
   };
 
+  if(!state.itemsCounter) {
+    return(
+      <div className={styles.container}>
+        Empty
+      </div>
+    )
+  }
+
   return (
-    <div>
-      {state.selectedItems.map((product) => (
-        <BasketCard
-          key={product.id}
-          data={product}
-          clickHandler={clickHandler}
-        />
-      ))}
+    <div className={styles.container}>
+      <BasketSidebar state={state} clickHandler={clickHandler}/>
+      <div className={styles.products} >
+        {state.selectedItems.map((product) => (
+          <BasketCard
+            key={product.id}
+            data={product}
+            clickHandler={clickHandler}
+          />
+        ))}
+      </div>
     </div>
   );
 }
